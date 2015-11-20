@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+           	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd
+            http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd">
+	<!-- 连接服务配置 -->
+	<rabbit:connection-factory id="connectionFactory" host="${mq.host}" username="${mq.username}" password="${mq.password}" port="${mq.port}" />
+	<rabbit:admin connection-factory="connectionFactory" />
+	<!--queue 队列声明 -->
+	<rabbit:queue id="mq_queue" durable="true" auto-delete="false" exclusive="false" name="mq_queue" />
+	<!-- exchange queue binging key 绑定 -->
+	<rabbit:direct-exchange name="mq-exchange" durable="true" auto-delete="false" id="mq-exchange">
+		<rabbit:bindings>
+			<rabbit:binding queue="mq_queue" key="queue_key" />
+		</rabbit:bindings>
+	</rabbit:direct-exchange>
+	<!-- 任务执行器 -->  
+	<task:executor id="taskExecutor" pool-size="10"/>  
+	<!-- queue litener 观察 监听模式 当有消息到达时会通知监听在对应的队列上的监听对象 -->
+	<rabbit:listener-container	connection-factory="connectionFactory" acknowledge="auto" task-executor="taskExecutor">
+		<rabbit:listener queues="mq_queue" ref="queueListener" />
+	</rabbit:listener-container>
+
+</beans>
