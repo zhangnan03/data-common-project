@@ -82,6 +82,22 @@
     <servlet-name>springServlet</servlet-name>
     <url-pattern>*.jhtml</url-pattern>
   </servlet-mapping>
+  <error-page>
+		<exception-type>org.apache.shiro.authz.AuthorizationException</exception-type>
+		<location>/WEB-INF/template/error/403.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/WEB-INF/template/error/500.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/WEB-INF/template/error/404.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>403</error-code>
+		<location>/WEB-INF/template/error/403.jsp</location>
+	</error-page>
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
