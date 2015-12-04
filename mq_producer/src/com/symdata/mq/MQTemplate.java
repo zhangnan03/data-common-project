@@ -17,6 +17,6 @@ public class MQTemplate {
 	 @Autowired
     private AmqpTemplate amqpTemplate;
     public void sendDataToQueue(Object obj) {
-        amqpTemplate.convertAndSend("queue_one_key",obj);
+        amqpTemplate.convertAndSend(obj);
     }  
 }

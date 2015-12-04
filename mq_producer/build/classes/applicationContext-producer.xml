@@ -24,6 +24,6 @@
 	<bean id="jsonMessageConverter" class="com.symdata.mq.FastJsonMessageConverter"></bean>
 
 	<!-- spring template声明	-->
-	<rabbit:template exchange="mq-exchange" id="amqpTemplate" connection-factory="connectionFactory" message-converter="jsonMessageConverter" />
+	<rabbit:template exchange="mq-exchange" id="amqpTemplate" routing-key="queue_key" connection-factory="connectionFactory" message-converter="jsonMessageConverter" />
 
 </beans>
